@@ -29,49 +29,87 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            pictureBox1 = new PictureBox();
+            pbPreview = new PictureBox();
             lblInfo = new Label();
             toolTip1 = new ToolTip(components);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            identifyToolStripMenuItem = new ToolStripMenuItem();
+            outlinedLabel1 = new OutlinedLabel();
+            ((System.ComponentModel.ISupportInitialize)pbPreview).BeginInit();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // pictureBox1
+            // pbPreview
             // 
-            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pictureBox1.Image = Properties.Resources.monitor;
-            pictureBox1.Location = new Point(3, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(188, 127);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 1;
-            pictureBox1.TabStop = false;
+            pbPreview.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pbPreview.Cursor = Cursors.Hand;
+            pbPreview.Image = Properties.Resources.monitor;
+            pbPreview.Location = new Point(3, 3);
+            pbPreview.Name = "pbPreview";
+            pbPreview.Size = new Size(188, 144);
+            pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
+            pbPreview.TabIndex = 1;
+            pbPreview.TabStop = false;
+            pbPreview.MouseHover += pbPreview_MouseHover;
             // 
             // lblInfo
             // 
             lblInfo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblInfo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lblInfo.Location = new Point(3, 133);
+            lblInfo.Location = new Point(3, 151);
             lblInfo.Name = "lblInfo";
-            lblInfo.Size = new Size(188, 24);
+            lblInfo.Size = new Size(188, 72);
             lblInfo.TabIndex = 2;
             lblInfo.Text = "Details";
             lblInfo.TextAlign = ContentAlignment.TopCenter;
             // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new Size(18, 18);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { identifyToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(119, 26);
+            // 
+            // identifyToolStripMenuItem
+            // 
+            identifyToolStripMenuItem.Name = "identifyToolStripMenuItem";
+            identifyToolStripMenuItem.Size = new Size(118, 22);
+            identifyToolStripMenuItem.Text = "Identify";
+            // 
+            // outlinedLabel1
+            // 
+            outlinedLabel1.BackColor = Color.Transparent;
+            outlinedLabel1.Font = new Font("Segoe UI", 64F, FontStyle.Bold, GraphicsUnit.Point);
+            outlinedLabel1.ForeColor = Color.Black;
+            outlinedLabel1.Location = new Point(-3, 0);
+            outlinedLabel1.Name = "outlinedLabel1";
+            outlinedLabel1.OutlineForeColor = Color.White;
+            outlinedLabel1.OutlineWidth = 10F;
+            outlinedLabel1.Size = new Size(194, 115);
+            outlinedLabel1.TabIndex = 3;
+            outlinedLabel1.Text = "1";
+            outlinedLabel1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // ScreenControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(outlinedLabel1);
             Controls.Add(lblInfo);
-            Controls.Add(pictureBox1);
+            Controls.Add(pbPreview);
             Name = "ScreenControl";
-            Size = new Size(194, 166);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            Size = new Size(194, 235);
+            ((System.ComponentModel.ISupportInitialize)pbPreview).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-        private PictureBox pictureBox1;
+        private PictureBox pbPreview;
         private Label lblInfo;
         private ToolTip toolTip1;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem identifyToolStripMenuItem;
+        private OutlinedLabel outlinedLabel1;
     }
 }
