@@ -1,10 +1,13 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Text;
+using WallpaperSwitcher.Utils;
 
 namespace WallpaperSwitcher
 {
     public partial class ScreenControl : UserControl
     {
+        private static Rectangle monitorPreviewRect = new Rectangle(30, 29, 466, 307);
+
         public ScreenControl()
         {
             InitializeComponent();
@@ -14,11 +17,12 @@ namespace WallpaperSwitcher
         {
             Screen = screen;
 
-            pbPreview.Image = DrawScreenPreview(screen.Id);
-            lblInfo.Text = screen.Screen.DeviceName;
+            lblId.Parent = pbPreview;
+            lblId.Text = screen.Id.ToString();
+            pbPreview.Image = DrawScreenPreview();
+            lblInfo.Text = screen.Screen.DeviceFriendlyName();
 
             var sb = new StringBuilder();
-            sb.AppendLine("Device Name: " + screen.ScreenSettings.dmDeviceName);
             sb.AppendLine($"Refresh Rate: {screen.ScreenSettings.dmDisplayFrequency}hz");
             sb.Append($"Resolution: {screen.Screen.Bounds.Width}x{screen.Screen.Bounds.Height}");
 
@@ -41,37 +45,32 @@ namespace WallpaperSwitcher
             toolTip1.SetToolTip(pbPreview, sb.ToString());
         }
 
-        private Bitmap DrawScreenPreview(int id)
+        private Bitmap DrawScreenPreview()
         {
             var icon = Properties.Resources.monitor;
             var bitmap = new Bitmap(icon.Width, icon.Height);
             using (var graphics = Graphics.FromImage(bitmap))
             {
+                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
                 // monitor icon
-                var rect = new Rectangle(30, 29, 466, 307);
                 graphics.DrawImage(icon, 0, 0, icon.Width, icon.Height);
 
                 // live view of wallpaper
                 var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
-                var monitorId = wallpaper.GetMonitorDevicePathAt((uint)id - 1);
+                var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
                 var wallpaperRect = wallpaper.GetMonitorRECT(monitorId);
                 var wallpaperPath = wallpaper.GetWallpaper(monitorId);
 
                 using (var wImg = Image.FromFile(wallpaperPath))
                 {
-                    var resized = (Image)new Bitmap(wImg, new Size(rect.Width, rect.Height));
-                    graphics.DrawImage(resized, rect.X, rect.Y);
+                    var resized = (Image)new Bitmap(wImg, new Size(monitorPreviewRect.Width, monitorPreviewRect.Height));
+                    graphics.DrawImage(resized, monitorPreviewRect.X, monitorPreviewRect.Y);
                 }
 
                 // monitor ID
-                const int fontSize = 64;
-
-
-
                 /*
-
-                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-
+                const int FontSize = 64;
                 using (GraphicsPath gp = new GraphicsPath())
                 {
                     using (Pen outline = new Pen(Brushes.White, 25) { LineJoin = LineJoin.Round })
@@ -84,14 +83,14 @@ namespace WallpaperSwitcher
                         {
                             using (Brush foreBrush = new SolidBrush(Color.Black))
                             {
-                                gp.AddString(id.ToString(), Font.FontFamily, (int)FontStyle.Bold, graphics.DpiY * fontSize / 72, rect, sf);
+                                gp.AddString(Screen.Id.ToString(), Font.FontFamily, (int)FontStyle.Bold, graphics.DpiY * FontSize / 72, rect, sf);
                                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                                 graphics.DrawPath(outline, gp);
                                 graphics.FillPath(foreBrush, gp);
                             }
                         }
                     }
-                } */
+                }*/
             }
 
             return bitmap;
@@ -100,6 +99,16 @@ namespace WallpaperSwitcher
         private void pbPreview_MouseHover(object sender, EventArgs e)
         {
 
+        }
+
+        private void pbPreview_MouseLeave(object sender, EventArgs e)
+        {
+            lblId.Visible = false;
+        }
+
+        private void pbPreview_MouseEnter(object sender, EventArgs e)
+        {
+            lblId.Visible = true;
         }
 
         public ManagedScreen Screen { get; }

@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 
 namespace WallpaperSwitcher
 {
@@ -9,6 +10,7 @@ namespace WallpaperSwitcher
             OutlineForeColor = Color.White;
             OutlineWidth = 10;
         }
+
         public Color OutlineForeColor { get; set; }
         public float OutlineWidth { get; set; }
         protected override void OnPaint(PaintEventArgs e)
@@ -23,6 +25,7 @@ namespace WallpaperSwitcher
                 gp.AddString(Text, Font.FontFamily, (int)Font.Style,
                     Font.Size, ClientRectangle, sf);
                 e.Graphics.ScaleTransform(1.3f, 1.35f);
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 e.Graphics.DrawPath(outline, gp);
                 e.Graphics.FillPath(foreBrush, gp);
