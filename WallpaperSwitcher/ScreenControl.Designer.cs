@@ -50,6 +50,7 @@
             pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
             pbPreview.TabIndex = 1;
             pbPreview.TabStop = false;
+            pbPreview.Click += pbPreview_Click;
             pbPreview.MouseEnter += pbPreview_MouseEnter;
             pbPreview.MouseLeave += pbPreview_MouseLeave;
             pbPreview.MouseHover += pbPreview_MouseHover;

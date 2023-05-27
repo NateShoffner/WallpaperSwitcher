@@ -24,7 +24,7 @@ namespace WallpaperSwitcher
             var infoBuilder = new StringBuilder();
             infoBuilder.AppendLine(screen.Screen.DeviceFriendlyName());
             if (screen.Screen.Primary)
-                           {
+            {
                 infoBuilder.AppendLine("(Primary)");
             }
             infoBuilder.AppendLine();
@@ -119,6 +119,23 @@ namespace WallpaperSwitcher
             lblId.Visible = true;
         }
 
+        private void pbPreview_Click(object sender, EventArgs e)
+        {
+            // support iamge types
+            using (var ofd = new OpenFileDialog()
+            {
+                Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png",
+                Title = "Select Wallpaper"
+            })
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
+                    var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
+                    wallpaper.SetWallpaper(monitorId, ofd.FileName);
+                }   
+            }
+        }
         public ManagedScreen Screen { get; }
 
         public override ContextMenuStrip ContextMenuStrip
