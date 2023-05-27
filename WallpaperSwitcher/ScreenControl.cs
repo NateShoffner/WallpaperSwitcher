@@ -20,29 +20,37 @@ namespace WallpaperSwitcher
             lblId.Parent = pbPreview;
             lblId.Text = screen.Id.ToString();
             pbPreview.Image = DrawScreenPreview();
-            lblInfo.Text = screen.Screen.DeviceFriendlyName();
 
-            var sb = new StringBuilder();
-            sb.AppendLine($"Refresh Rate: {screen.ScreenSettings.dmDisplayFrequency}hz");
-            sb.Append($"Resolution: {screen.Screen.Bounds.Width}x{screen.Screen.Bounds.Height}");
+            var infoBuilder = new StringBuilder();
+            infoBuilder.AppendLine(screen.Screen.DeviceFriendlyName());
+            if (screen.Screen.Primary)
+                           {
+                infoBuilder.AppendLine("(Primary)");
+            }
+            infoBuilder.AppendLine();
+            lblInfo.Text = infoBuilder.ToString();
+
+            var toolTipBuilder = new StringBuilder();
+            toolTipBuilder.AppendLine($"Refresh Rate: {screen.ScreenSettings.dmDisplayFrequency}hz");
+            toolTipBuilder.Append($"Resolution: {screen.Screen.Bounds.Width}x{screen.Screen.Bounds.Height}");
 
             if (screen.ScreenSettings.dmDisplayOrientation != ScreenOrientation.Angle0)
             {
                 switch (screen.ScreenSettings.dmDisplayOrientation)
                 {
                     case ScreenOrientation.Angle90:
-                        sb.Append(" (Portrait)");
+                        toolTipBuilder.Append(" (Portrait)");
                         break;
                     case ScreenOrientation.Angle180:
-                        sb.Append(" (Upside Down)");
+                        toolTipBuilder.Append(" (Upside Down)");
                         break;
                     case ScreenOrientation.Angle270:
-                        sb.Append(" (Portrait Upside Down)");
+                        toolTipBuilder.Append(" (Portrait Upside Down)");
                         break;
                 }
             }
 
-            toolTip1.SetToolTip(pbPreview, sb.ToString());
+            toolTip1.SetToolTip(pbPreview, toolTipBuilder.ToString());
         }
 
         private Bitmap DrawScreenPreview()
