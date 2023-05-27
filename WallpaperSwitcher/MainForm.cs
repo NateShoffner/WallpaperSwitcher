@@ -85,10 +85,21 @@ namespace WallpaperSwitcher
             }
 
             await Task.Delay(2000);
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
 
             foreach (IdentityForm form in forms)
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SettingsForm())
             {
                 form.Close();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+
+                }
             }
         }
 
