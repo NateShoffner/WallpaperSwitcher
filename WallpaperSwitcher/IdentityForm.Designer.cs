@@ -28,41 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new OutlinedLabel();
+            label1 = new Label();
             SuspendLayout();
             // 
             // label1
             // 
-            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 300F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(532, 42);
+            label1.Dock = DockStyle.Fill;
+            label1.Font = new Font("Segoe UI", 200F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.OutlineForeColor = Color.White;
-            label1.OutlineWidth = 10F;
             label1.RightToLeft = RightToLeft.No;
-            label1.Size = new Size(438, 532);
+            label1.Size = new Size(350, 350);
             label1.TabIndex = 0;
             label1.Text = "1";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.TextAlign = ContentAlignment.TopCenter;
             // 
             // IdentityForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(982, 583);
+            ClientSize = new Size(350, 350);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "IdentityForm";
             ShowIcon = false;
             ShowInTaskbar = false;
+            StartPosition = FormStartPosition.Manual;
             Text = "IdentityForm";
+            TopMost = true;
+            Load += IdentityForm_Load;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private OutlinedLabel label1;
+        private Label label1;
     }
 }

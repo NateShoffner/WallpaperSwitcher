@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Timer = System.Windows.Forms.Timer;
 
 namespace WallpaperSwitcher
 {
@@ -17,21 +9,32 @@ namespace WallpaperSwitcher
             InitializeComponent();
         }
 
-        public IdentityForm(Screen screen, string indicator) : this()
+        public IdentityForm(ManagedScreen managedScreen, int timeout) : this()
         {
-            label1.OutlineForeColor = Color.Black;
-            label1.ForeColor = Color.White;
-            label1.Text = indicator;
+            Timeout = timeout;
+            label1.Text = managedScreen.Id.ToString();
 
-            // make the form transparent
-            BackColor = Color.Red;
-            TransparencyKey = Color.Red;
+            const int margin = 20;
+            Location = new Point(managedScreen.Screen.WorkingArea.Width - Width - margin, managedScreen.Screen.WorkingArea.Height - Height - margin);
+        }
 
-            // full screen
-            StartPosition = FormStartPosition.Manual;
-            Location = screen.WorkingArea.Location;
-            WindowState = FormWindowState.Maximized;
-            TopMost = true;
+        public int Timeout { get; }
+
+        private void IdentityForm_Load(object sender, EventArgs e)
+        {
+            Timer t = new Timer
+            {
+                Interval = Timeout
+            };
+
+            t.Tick += (o, e) => {
+
+                t.Stop();
+                Close();
+            };
+
+
+            t.Start();
         }
     }
 }
