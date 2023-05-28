@@ -57,7 +57,7 @@ namespace WallpaperSwitcher
 
         }
 
-        public ManagedScreen(Screen screen, int id)
+        public ManagedScreen(Screen screen, uint id)
         {
             Screen = screen;
             Id = id;
@@ -77,7 +77,7 @@ namespace WallpaperSwitcher
         }
 
         public Screen Screen { get; }
-        public int Id { get; }
+        public uint Id { get; }
 
         public DEVMODE ScreenSettings => screenSettings;
     }

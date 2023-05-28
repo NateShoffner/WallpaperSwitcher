@@ -1,4 +1,6 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Text;
 using WallpaperSwitcher.Utils;
 
@@ -6,8 +8,6 @@ namespace WallpaperSwitcher
 {
     public partial class ScreenControl : UserControl
     {
-        private static Rectangle monitorPreviewRect = new Rectangle(30, 29, 466, 307);
-
         public ScreenControl()
         {
             InitializeComponent();
@@ -19,7 +19,8 @@ namespace WallpaperSwitcher
 
             lblId.Parent = pbPreview;
             lblId.Text = screen.Id.ToString();
-            pbPreview.Image = DrawScreenPreview();
+
+            lblInfo.Parent = pbPreview;
 
             var infoBuilder = new StringBuilder();
             infoBuilder.AppendLine(screen.Screen.DeviceFriendlyName());
@@ -53,70 +54,36 @@ namespace WallpaperSwitcher
             toolTip1.SetToolTip(pbPreview, toolTipBuilder.ToString());
         }
 
-        private Bitmap DrawScreenPreview()
+        public void RefreshPreview()
         {
-            var icon = Properties.Resources.monitor;
-            var bitmap = new Bitmap(icon.Width, icon.Height);
-            using (var graphics = Graphics.FromImage(bitmap))
-            {
-                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-
-                // monitor icon
-                graphics.DrawImage(icon, 0, 0, icon.Width, icon.Height);
-
-                // live view of wallpaper
-                var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
-                var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
-                var wallpaperRect = wallpaper.GetMonitorRECT(monitorId);
-                var wallpaperPath = wallpaper.GetWallpaper(monitorId);
-
-                using (var wImg = Image.FromFile(wallpaperPath))
-                {
-                    var resized = (Image)new Bitmap(wImg, new Size(monitorPreviewRect.Width, monitorPreviewRect.Height));
-                    graphics.DrawImage(resized, monitorPreviewRect.X, monitorPreviewRect.Y);
-                }
-
-                // monitor ID
-                /*
-                const int FontSize = 64;
-                using (GraphicsPath gp = new GraphicsPath())
-                {
-                    using (Pen outline = new Pen(Brushes.White, 25) { LineJoin = LineJoin.Round })
-                    {
-                        using (StringFormat sf = new StringFormat()
-                        {
-                            LineAlignment = StringAlignment.Near,
-                            Alignment = StringAlignment.Center
-                        })
-                        {
-                            using (Brush foreBrush = new SolidBrush(Color.Black))
-                            {
-                                gp.AddString(Screen.Id.ToString(), Font.FontFamily, (int)FontStyle.Bold, graphics.DpiY * FontSize / 72, rect, sf);
-                                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                                graphics.DrawPath(outline, gp);
-                                graphics.FillPath(foreBrush, gp);
-                            }
-                        }
-                    }
-                }*/
-            }
-
-            return bitmap;
+            pbPreview.Image = DrawScreenPreview();
         }
 
-        private void pbPreview_MouseHover(object sender, EventArgs e)
+        private Image DrawScreenPreview()
         {
+            // live view of wallpaper
+            var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
+            var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
+            var wallpaperRect = wallpaper.GetMonitorRECT(monitorId);
+            var wallpaperPath = wallpaper.GetWallpaper(monitorId);
 
+            using (var wImg = Image.FromFile(wallpaperPath))
+            {
+                var resized = wImg.GetThumbnailImage(pbPreview.Width, pbPreview.Height, null, IntPtr.Zero);
+                return resized;
+            }
         }
 
         private void pbPreview_MouseLeave(object sender, EventArgs e)
         {
             lblId.Visible = false;
+            lblInfo.Visible = true;
         }
 
         private void pbPreview_MouseEnter(object sender, EventArgs e)
         {
             lblId.Visible = true;
+            lblInfo.Visible = false;
         }
 
         private void pbPreview_Click(object sender, EventArgs e)
@@ -133,9 +100,21 @@ namespace WallpaperSwitcher
                     var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
                     var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
                     wallpaper.SetWallpaper(monitorId, ofd.FileName);
-                }   
+                    RefreshPreview();
+                }
             }
         }
+
+        private void ScreenControl_Paint(object sender, PaintEventArgs e)
+        {
+            const int BORDER_SIZE = 3;
+
+            ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset,
+                                  SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset,
+                                  SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset,
+                                  SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset);
+        }
+
         public ManagedScreen Screen { get; }
 
         public override ContextMenuStrip ContextMenuStrip

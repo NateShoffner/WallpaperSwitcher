@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Runtime.InteropServices;
 
-namespace WallpaperSwitcher
+namespace WallpaperSwitcher.Utils
 {
 
     [StructLayout(LayoutKind.Sequential)]

@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             pbPreview = new PictureBox();
-            lblInfo = new Label();
+            lblInfo = new OutlinedLabel();
             toolTip1 = new ToolTip(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
             identifyToolStripMenuItem = new ToolStripMenuItem();
@@ -41,27 +41,28 @@
             // 
             // pbPreview
             // 
-            pbPreview.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pbPreview.Cursor = Cursors.Hand;
-            pbPreview.Image = Properties.Resources.monitor;
+            pbPreview.Dock = DockStyle.Fill;
             pbPreview.Location = new Point(3, 3);
             pbPreview.Name = "pbPreview";
-            pbPreview.Size = new Size(188, 127);
-            pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
+            pbPreview.Size = new Size(342, 190);
             pbPreview.TabIndex = 1;
             pbPreview.TabStop = false;
             pbPreview.Click += pbPreview_Click;
             pbPreview.MouseEnter += pbPreview_MouseEnter;
             pbPreview.MouseLeave += pbPreview_MouseLeave;
-            pbPreview.MouseHover += pbPreview_MouseHover;
             // 
             // lblInfo
             // 
             lblInfo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblInfo.AutoSize = true;
+            lblInfo.BackColor = Color.Transparent;
             lblInfo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lblInfo.Location = new Point(3, 133);
+            lblInfo.Location = new Point(3, 3);
             lblInfo.Name = "lblInfo";
-            lblInfo.Size = new Size(188, 64);
+            lblInfo.OutlineForeColor = Color.White;
+            lblInfo.OutlineWidth = 2F;
+            lblInfo.Size = new Size(57, 21);
             lblInfo.TabIndex = 2;
             lblInfo.Text = "Details";
             lblInfo.TextAlign = ContentAlignment.TopCenter;
@@ -81,15 +82,15 @@
             // 
             // lblId
             // 
-            lblId.Anchor = AnchorStyles.None;
+            lblId.AutoSize = true;
             lblId.BackColor = Color.Transparent;
             lblId.Font = new Font("Segoe UI", 32F, FontStyle.Bold, GraphicsUnit.Point);
             lblId.ForeColor = Color.Black;
-            lblId.Location = new Point(55, 147);
+            lblId.Location = new Point(3, 3);
             lblId.Name = "lblId";
             lblId.OutlineForeColor = Color.White;
             lblId.OutlineWidth = 5F;
-            lblId.Size = new Size(99, 60);
+            lblId.Size = new Size(50, 59);
             lblId.TabIndex = 3;
             lblId.Text = "1";
             lblId.TextAlign = ContentAlignment.MiddleCenter;
@@ -103,15 +104,18 @@
             Controls.Add(lblInfo);
             Controls.Add(pbPreview);
             Name = "ScreenControl";
-            Size = new Size(194, 207);
+            Padding = new Padding(3);
+            Size = new Size(348, 196);
+            Paint += ScreenControl_Paint;
             ((System.ComponentModel.ISupportInitialize)pbPreview).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
         private PictureBox pbPreview;
-        private Label lblInfo;
+        private OutlinedLabel lblInfo;
         private ToolTip toolTip1;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem identifyToolStripMenuItem;
