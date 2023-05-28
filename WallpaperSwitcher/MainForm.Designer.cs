@@ -162,7 +162,6 @@
             Text = "Wallpaper Switcher";
             ResizeEnd += MainForm_ResizeEnd;
             SizeChanged += MainForm_SizeChanged;
-            Resize += MainForm_Resize;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             statusStrip1.ResumeLayout(false);

@@ -13,9 +13,14 @@ namespace WallpaperSwitcher
     {
         private List<ManagedScreen> managedScreens = new List<ManagedScreen>();
         private List<ScreenControl> screenControls = new List<ScreenControl>();
+
+        private FormWindowState _previousWindowState;
+
         public MainForm()
         {
             InitializeComponent();
+
+            _previousWindowState = WindowState;
 
             CreateScreenControls();
             DrawScreens(true);
@@ -154,13 +159,11 @@ namespace WallpaperSwitcher
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
-        {
+        { 
+            if (WindowState != _previousWindowState)
+                DrawScreens(true);
 
-        }
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-
+            _previousWindowState = WindowState;
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)
