@@ -133,9 +133,33 @@ namespace WallpaperSwitcher
             identifyMenuItem.Click += (s, e) => ShowIdentification(screen);
             contextMenu.Items.Add(identifyMenuItem);
 
-            var locateMenuItem = new ToolStripMenuItem() { Text = "Open in Explorer" };
+            var locateMenuItem = new ToolStripMenuItem() { Text = "Open in Explorer..." };
             locateMenuItem.Click += (s, e) => Process.Start("explorer.exe", $"/select, \"{screenControl.GetWallpaperPath()}\"");
             contextMenu.Items.Add(locateMenuItem);
+
+            var positionMenuItem = new ToolStripMenuItem() { Text = "Position..." };
+
+            foreach (var position in Enum.GetValues(typeof(DesktopWallpaperPosition)))
+            {
+                var positionItem = new ToolStripMenuItem() { Text = position.ToString() };
+                var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
+
+                var currentPosition = wallpaper.GetPosition();
+                if (currentPosition == (DesktopWallpaperPosition)position)
+                    positionItem.Checked = true;
+
+                positionItem.Click += (s, e) =>
+                {
+                    wallpaper.SetPosition((DesktopWallpaperPosition)position);
+
+                };
+                positionMenuItem.DropDownItems.Add(positionItem);
+
+            }
+
+            contextMenu.Items.Add(positionMenuItem);
+
+
 
             screenControl.ContextMenuStrip = contextMenu;
             return screenControl;
