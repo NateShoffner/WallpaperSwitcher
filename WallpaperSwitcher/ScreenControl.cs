@@ -59,13 +59,16 @@ namespace WallpaperSwitcher
             pbPreview.Image = DrawScreenPreview();
         }
 
-        private Image DrawScreenPreview()
+        public string GetWallpaperPath()
         {
-            // live view of wallpaper
             var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
             var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
-            var wallpaperRect = wallpaper.GetMonitorRECT(monitorId);
-            var wallpaperPath = wallpaper.GetWallpaper(monitorId);
+            return wallpaper.GetWallpaper(monitorId);
+        }
+
+        private Image DrawScreenPreview()
+        {
+            var wallpaperPath = GetWallpaperPath();
 
             using (var wImg = Image.FromFile(wallpaperPath))
             {

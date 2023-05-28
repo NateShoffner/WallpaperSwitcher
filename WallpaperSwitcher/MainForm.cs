@@ -128,6 +128,10 @@ namespace WallpaperSwitcher
             identifyMenuItem.Click += (s, e) => ShowIdentification(screen);
             contextMenu.Items.Add(identifyMenuItem);
 
+            var locateMenuItem = new ToolStripMenuItem() { Text = "Open in Explorer" };
+            locateMenuItem.Click += (s, e) => Process.Start("explorer.exe", $"/select, \"{screenControl.GetWallpaperPath()}\"");
+            contextMenu.Items.Add(locateMenuItem);
+
             screenControl.ContextMenuStrip = contextMenu;
             return screenControl;
         }
