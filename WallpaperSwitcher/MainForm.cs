@@ -64,18 +64,6 @@ namespace WallpaperSwitcher
                 if (refreshPreview)
                     control.RefreshPreview();
 
-                /*
-                var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
-                var monitorId = wallpaper.GetMonitorDevicePathAt(i);
-                var wallpaperRect = wallpaper.GetMonitorRECT(monitorId);
-                var wallpaperPath = wallpaper.GetWallpaper(monitorId);
-
-                using (var wImg = Image.FromFile(wallpaperPath))
-                {
-                    var resized = (Image)new Bitmap(wImg, new Size(button.Width, button.Height));
-                    button.Image = resized;
-                }*/
-
                 panel1.Controls.Add(control);
             }
         }
@@ -104,14 +92,14 @@ namespace WallpaperSwitcher
             lblScreens.Text = $"Screens: {managedScreens.Count}";
         }
 
-        private void reloadScreensToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ReloadScreens(object sender, EventArgs e)
         {
             CreateScreenControls();
             DrawScreens(true);
 
         }
 
-        private async void identifyScreensToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void IdentifyScreens(object sender, EventArgs e)
         {
             foreach (var screen in managedScreens)
             {
@@ -158,9 +146,6 @@ namespace WallpaperSwitcher
             }
 
             contextMenu.Items.Add(positionMenuItem);
-
-
-
             screenControl.ContextMenuStrip = contextMenu;
             return screenControl;
         }
@@ -183,7 +168,7 @@ namespace WallpaperSwitcher
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
-        { 
+        {
             if (WindowState != _previousWindowState)
                 DrawScreens(true);
 
@@ -193,6 +178,17 @@ namespace WallpaperSwitcher
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
             DrawScreens(true);
+        }
+
+        private void OpenDisplaySettings(object sender, EventArgs e)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "ms-settings:display",
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
         }
     }
 }
