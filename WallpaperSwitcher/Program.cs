@@ -8,8 +8,14 @@ namespace WallpaperSwitcher
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            Version win8version = new Version(6, 2, 9200, 0);
+
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT || Environment.OSVersion.Version < win8version)
+            {
+                MessageBox.Show("This application requires Windows 8 or newer.");
+                return;
+            }
+
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm());
         }
