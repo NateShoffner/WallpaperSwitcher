@@ -1,7 +1,7 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace WallpaperSwitcher
+namespace WallpaperSwitcher.Controls
 {
     public class OutlinedLabel : Label
     {
@@ -25,7 +25,7 @@ namespace WallpaperSwitcher
                 gp.AddString(Text, Font.FontFamily, (int)Font.Style,
                     Font.Size, ClientRectangle, sf);
                 e.Graphics.ScaleTransform(1.3f, 1.35f);
-                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 e.Graphics.DrawPath(outline, gp);
                 e.Graphics.FillPath(foreBrush, gp);

@@ -1,4 +1,6 @@
-﻿namespace WallpaperSwitcher
+﻿using WallpaperSwitcher.Controls;
+
+namespace WallpaperSwitcher
 {
     partial class ScreenControl
     {
