@@ -64,11 +64,10 @@ namespace WallpaperSwitcher.Controls
             double PreviewScale = 1f;
 
             // build the virtual screen
-            Rectangle rectangle = new Rectangle(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue);
-            foreach (var screen in managedScreens)
-            {
-                rectangle = Rectangle.Union(rectangle, screen.Screen.Bounds);
-            }
+
+            var rectangle = managedScreens.Aggregate(new Rectangle(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue), (current, screen) 
+                => Rectangle.Union(current, screen.Screen.Bounds));
+
             var virtualScreen = rectangle;
 
             double workingAreaHeight = (float)panel1.Height / (float)virtualScreen.Height;
@@ -76,15 +75,15 @@ namespace WallpaperSwitcher.Controls
 
             double scaling = Math.Min(workingAreaHeight, workingAreaWidth) * PreviewScale;
 
-            int num2 = (int)(((double)panel1.Width - (double)(float)virtualScreen.Width * scaling) / 2.0);
-            int num3 = (int)(((double)panel1.Height - (double)(float)virtualScreen.Height * scaling) / 2.0);
+            int relativeX = (int)(((double)panel1.Width - (double)(float)virtualScreen.Width * scaling) / 2.0);
+            int relativeY = (int)(((double)panel1.Height - (double)(float)virtualScreen.Height * scaling) / 2.0);
 
             for (int i = 0; i < managedScreens.Count(); i++)
             {
                 ManagedScreen? screen = managedScreens[i];
 
-                int x = (int)((double)(screen.Screen.Bounds.Location.X + Math.Abs(virtualScreen.X)) * scaling) + num2;
-                int y = (int)((double)(screen.Screen.Bounds.Location.Y + Math.Abs(virtualScreen.Y)) * scaling) + num3;
+                int x = (int)((double)(screen.Screen.Bounds.Location.X + Math.Abs(virtualScreen.X)) * scaling) + relativeX;
+                int y = (int)((double)(screen.Screen.Bounds.Location.Y + Math.Abs(virtualScreen.Y)) * scaling) + relativeY;
                 int width = (int)((double)screen.Screen.Bounds.Width * scaling);
                 int height = (int)((double)screen.Screen.Bounds.Height * scaling);
 
