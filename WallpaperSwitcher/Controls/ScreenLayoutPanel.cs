@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using WallpaperSwitcher.Utils;
 
 namespace WallpaperSwitcher.Controls
@@ -21,6 +22,11 @@ namespace WallpaperSwitcher.Controls
         public event ScreenEventHandler ScreenIdentifyClick;
 
         public ReadOnlyCollection<ManagedScreen> ManagedScreens => managedScreens.AsReadOnly();
+
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+
+        private const int WM_SETREDRAW = 11;
 
         public ScreenLayoutPanel()
         {
@@ -51,8 +57,10 @@ namespace WallpaperSwitcher.Controls
             }
         }
 
-        public void DrawScreens()
+        public void DrawScreens(bool skipPreview = false)
         {
+            SuspendDrawing(this);
+
             double PreviewScale = 1f;
 
             // build the virtual screen
@@ -86,11 +94,13 @@ namespace WallpaperSwitcher.Controls
 
                 control.SetBounds(x, y, width, height);
 
-                if (ShowWallpaperPreviews)
+                if (!skipPreview)
                     control.RefreshPreview();
 
                 panel1.Controls.Add(control);
             }
+
+            ResumeDrawing(this);
         }
 
         private ScreenControl CreateScreenControl(ManagedScreen screen)
@@ -134,5 +144,68 @@ namespace WallpaperSwitcher.Controls
             screenControl.ContextMenuStrip = contextMenu;
             return screenControl;
         }
+
+        public static void SuspendDrawing(Control parent)
+        {
+            SendMessage(parent.Handle, WM_SETREDRAW, false, 0);
+        }
+
+        public static void ResumeDrawing(Control parent)
+        {
+            SendMessage(parent.Handle, WM_SETREDRAW, true, 0);
+            parent.Refresh();
+        }
+
+        private void ScreenLayoutPanel_Load(object sender, EventArgs e)
+        {
+            // hook into the parent form's resize events so we can use them within our control
+            if (!this.DesignMode)
+            {
+                var parent = Parent;
+
+                while (!(parent is Form))
+                    parent = parent.Parent;
+
+                var form = parent as Form;
+
+                if (form == null)
+                    return;
+
+                form.Resize += Parent_Resize;
+                form.ResizeBegin += Parent_ResizeBegin;
+                form.ResizeEnd += Parent_ResizeEnd;
+            }
+        }
+
+        private void Parent_Resize(object? sender, EventArgs e)
+        {
+            DrawScreens(true);
+        }
+
+        private void Parent_ResizeBegin(object? sender, EventArgs e)
+        {
+            this.IsResizing = true;
+            Debug.WriteLine("Resize started, enabling lazy scaling");
+
+            foreach (var screenControl in screenControls)
+            {
+                screenControl.UseLazyScaling = true;
+            }
+        }
+
+        private void Parent_ResizeEnd(object? sender, EventArgs e)
+        {
+            this.IsResizing = false;
+            Debug.WriteLine("Resize ended, disabling lazy scaling");
+            foreach (var screenControl in screenControls)
+            {
+
+                screenControl.UseLazyScaling = false;
+            }
+
+            DrawScreens();
+        }
+
+        public bool IsResizing { get; set; } = false;
     }
 }

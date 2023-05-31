@@ -56,6 +56,15 @@ namespace WallpaperSwitcher
             toolTip1.SetToolTip(pbPreview, toolTipBuilder.ToString());
         }
 
+        /// <summary>
+        /// Gets or sets whether the wallpaper preview will be lazily scaled to fit the preview box.
+        /// </summary>
+        public bool UseLazyScaling
+        {
+            get => pbPreview.SizeMode != PictureBoxSizeMode.Normal;
+            set => pbPreview.SizeMode = value ? PictureBoxSizeMode.StretchImage : PictureBoxSizeMode.Normal;
+        }
+
         public void RefreshPreview()
         {
             if (ShowWallpaperPreviews)

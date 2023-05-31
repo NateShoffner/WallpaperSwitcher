@@ -46,6 +46,7 @@
             Controls.Add(panel1);
             Name = "ScreenLayoutPanel";
             Size = new Size(640, 360);
+            Load += ScreenLayoutPanel_Load;
             ResumeLayout(false);
         }
 

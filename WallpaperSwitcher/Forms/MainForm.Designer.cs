@@ -200,7 +200,6 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Wallpaper Switcher";
-            ResizeEnd += MainForm_ResizeEnd;
             SizeChanged += MainForm_SizeChanged;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

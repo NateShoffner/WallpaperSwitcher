@@ -68,16 +68,14 @@ namespace WallpaperSwitcher
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
+            //TODO maybe handle this in ScreenLayoutPanel
+
             if (WindowState != _previousWindowState)
                 screenLayoutPanel1.DrawScreens();
 
             _previousWindowState = WindowState;
         }
 
-        private void MainForm_ResizeEnd(object sender, EventArgs e)
-        {
-            screenLayoutPanel1.DrawScreens();
-        }
 
         private void OpenDisplaySettings(object sender, EventArgs e)
         {
