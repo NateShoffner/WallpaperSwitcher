@@ -33,6 +33,7 @@
             reloadScreensToolStripMenuItem = new ToolStripMenuItem();
             identifyScreensToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
+            displaySettingsToolStripMenuItem = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             exitToolStripMenuItem = new ToolStripMenuItem();
@@ -40,11 +41,10 @@
             aboutToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             lblScreens = new ToolStripStatusLabel();
-            panel1 = new Panel();
             button1 = new Button();
             button2 = new Button();
             btnDisplaySettings = new Button();
-            displaySettingsToolStripMenuItem = new ToolStripMenuItem();
+            screenLayoutPanel1 = new Controls.ScreenLayoutPanel();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -69,38 +69,45 @@
             // reloadScreensToolStripMenuItem
             // 
             reloadScreensToolStripMenuItem.Name = "reloadScreensToolStripMenuItem";
-            reloadScreensToolStripMenuItem.Size = new Size(180, 22);
+            reloadScreensToolStripMenuItem.Size = new Size(166, 22);
             reloadScreensToolStripMenuItem.Text = "Reload Screens";
-            reloadScreensToolStripMenuItem.Click += ReloadScreens;
+            reloadScreensToolStripMenuItem.Click += LoadScreens;
             // 
             // identifyScreensToolStripMenuItem
             // 
             identifyScreensToolStripMenuItem.Name = "identifyScreensToolStripMenuItem";
-            identifyScreensToolStripMenuItem.Size = new Size(180, 22);
+            identifyScreensToolStripMenuItem.Size = new Size(166, 22);
             identifyScreensToolStripMenuItem.Text = "Identify Screens";
             identifyScreensToolStripMenuItem.Click += IdentifyScreens;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(177, 6);
+            toolStripSeparator1.Size = new Size(163, 6);
+            // 
+            // displaySettingsToolStripMenuItem
+            // 
+            displaySettingsToolStripMenuItem.Name = "displaySettingsToolStripMenuItem";
+            displaySettingsToolStripMenuItem.Size = new Size(166, 22);
+            displaySettingsToolStripMenuItem.Text = "Display Settings...";
+            displaySettingsToolStripMenuItem.Click += OpenDisplaySettings;
             // 
             // settingsToolStripMenuItem
             // 
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(180, 22);
+            settingsToolStripMenuItem.Size = new Size(166, 22);
             settingsToolStripMenuItem.Text = "Settings...";
             settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(177, 6);
+            toolStripSeparator2.Size = new Size(163, 6);
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(166, 22);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
@@ -133,15 +140,6 @@
             lblScreens.Size = new Size(59, 17);
             lblScreens.Text = "Screens: 0";
             // 
-            // panel1
-            // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel1.BackColor = SystemColors.AppWorkspace;
-            panel1.Location = new Point(12, 27);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(646, 303);
-            panel1.TabIndex = 0;
-            // 
             // button1
             // 
             button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
@@ -151,7 +149,7 @@
             button1.TabIndex = 3;
             button1.Text = "Refresh";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += ReloadScreens;
+            button1.Click += LoadScreens;
             // 
             // button2
             // 
@@ -175,22 +173,26 @@
             btnDisplaySettings.UseVisualStyleBackColor = true;
             btnDisplaySettings.Click += OpenDisplaySettings;
             // 
-            // displaySettingsToolStripMenuItem
+            // screenLayoutPanel1
             // 
-            displaySettingsToolStripMenuItem.Name = "displaySettingsToolStripMenuItem";
-            displaySettingsToolStripMenuItem.Size = new Size(180, 22);
-            displaySettingsToolStripMenuItem.Text = "Display Settings...";
-            displaySettingsToolStripMenuItem.Click += OpenDisplaySettings;
+            screenLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            screenLayoutPanel1.Location = new Point(12, 27);
+            screenLayoutPanel1.Name = "screenLayoutPanel1";
+            screenLayoutPanel1.ShowScreenModels = true;
+            screenLayoutPanel1.ShowScreenNumbers = true;
+            screenLayoutPanel1.ShowWallpaperPreviews = true;
+            screenLayoutPanel1.Size = new Size(646, 303);
+            screenLayoutPanel1.TabIndex = 6;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(670, 407);
+            Controls.Add(screenLayoutPanel1);
             Controls.Add(btnDisplaySettings);
             Controls.Add(button2);
             Controls.Add(button1);
-            Controls.Add(panel1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
             DoubleBuffered = true;
@@ -223,10 +225,10 @@
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator2;
-        private Panel panel1;
         private Button button1;
         private Button button2;
         private Button btnDisplaySettings;
         private ToolStripMenuItem displaySettingsToolStripMenuItem;
+        private Controls.ScreenLayoutPanel screenLayoutPanel1;
     }
 }

@@ -8,6 +8,8 @@ namespace WallpaperSwitcher
 {
     public partial class ScreenControl : UserControl
     {
+        public bool ShowWallpaperPreviews { get; set; } = true;
+
         public ScreenControl()
         {
             InitializeComponent();
@@ -56,7 +58,10 @@ namespace WallpaperSwitcher
 
         public void RefreshPreview()
         {
-            pbPreview.Image = DrawScreenPreview();
+            if (ShowWallpaperPreviews)
+                pbPreview.Image = DrawScreenPreview();
+            else
+                pbPreview.Image = null;
         }
 
         public string GetWallpaperPath()

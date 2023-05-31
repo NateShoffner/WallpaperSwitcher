@@ -1,19 +1,10 @@
 using System.Diagnostics;
-using System.Drawing;
-using System.Management;
-using System.Threading;
-using System.Windows.Forms;
 using WallpaperSwitcher.Forms;
-using WallpaperSwitcher.Utils;
-using static WallpaperSwitcher.ManagedScreen;
 
 namespace WallpaperSwitcher
 {
     public partial class MainForm : Form
     {
-        private List<ManagedScreen> managedScreens = new List<ManagedScreen>();
-        private List<ScreenControl> screenControls = new List<ScreenControl>();
-
         private FormWindowState _previousWindowState;
 
         public MainForm()
@@ -22,86 +13,31 @@ namespace WallpaperSwitcher
 
             _previousWindowState = WindowState;
 
-            CreateScreenControls();
-            DrawScreens(true);
+            screenLayoutPanel1.ScreenIdentifyClick += ShowIdentification;
+
+            LoadScreens(this, EventArgs.Empty);
         }
 
-        private void DrawScreens(bool refreshPreview)
+        private void LoadScreens(object sender, EventArgs e)
         {
-            double PreviewScale = 1f;
+            var screens = Screen.AllScreens;
 
-            // build the virtual screen
-            Rectangle rectangle = new Rectangle(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue);
-            foreach (var screen in managedScreens)
-            {
-                rectangle = Rectangle.Union(rectangle, screen.Screen.Bounds);
-            }
-            var virtualScreen = rectangle;
-
-            double workingAreaHeight = (float)panel1.Height / (float)virtualScreen.Height;
-            double workingAreaWidth = (float)panel1.Width / (float)virtualScreen.Width;
-
-            double scaling = Math.Min(workingAreaHeight, workingAreaWidth) * PreviewScale;
-
-            int num2 = (int)(((double)panel1.Width - (double)(float)virtualScreen.Width * scaling) / 2.0);
-            int num3 = (int)(((double)panel1.Height - (double)(float)virtualScreen.Height * scaling) / 2.0);
-
-            for (int i = 0; i < managedScreens.Count(); i++)
-            {
-                ManagedScreen? screen = managedScreens[i];
-
-                int x = (int)((double)(screen.Screen.Bounds.Location.X + Math.Abs(virtualScreen.X)) * scaling) + num2;
-                int y = (int)((double)(screen.Screen.Bounds.Location.Y + Math.Abs(virtualScreen.Y)) * scaling) + num3;
-                int width = (int)((double)screen.Screen.Bounds.Width * scaling);
-                int height = (int)((double)screen.Screen.Bounds.Height * scaling);
-
-                var control = screenControls[i];
-
-                Debug.WriteLine($"Screen {i} - X: {x}, Y: {y}, Width: {width}, Height: {height}");
-
-                control.SetBounds(x, y, width, height);
-
-                if (refreshPreview)
-                    control.RefreshPreview();
-
-                panel1.Controls.Add(control);
-            }
-        }
-
-        private void CreateScreenControls()
-        {
-            Screen[] screens = Screen.AllScreens;
-
-            managedScreens.Clear();
-            panel1.Controls.Clear();
-            screenControls.Clear();
+            screenLayoutPanel1.ClearScreens();
 
             for (uint i = 0; i < screens.Length; i++)
             {
                 var userFriendlyId = i + 1;
                 ManagedScreen screen = new ManagedScreen(screens[i], userFriendlyId);
-                var control = CreateScreenControl(screen);
-                control.RefreshPreview();
-                control.Margin = new Padding(5);
-
-                managedScreens.Add(screen);
-                panel1.Controls.Add(control);
-                screenControls.Add(control);
+                screenLayoutPanel1.AddScreen(screen);
             }
 
-            lblScreens.Text = $"Screens: {managedScreens.Count}";
+            lblScreens.Text = $"Screens: {screens.Length}";
+            screenLayoutPanel1.DrawScreens();
         }
 
-        private void ReloadScreens(object sender, EventArgs e)
+        private void IdentifyScreens(object sender, EventArgs e)
         {
-            CreateScreenControls();
-            DrawScreens(true);
-
-        }
-
-        private async void IdentifyScreens(object sender, EventArgs e)
-        {
-            foreach (var screen in managedScreens)
+            foreach (var screen in screenLayoutPanel1.ManagedScreens)
             {
                 ShowIdentification(screen);
             }
@@ -112,43 +48,6 @@ namespace WallpaperSwitcher
             Application.Exit();
         }
 
-        private ScreenControl CreateScreenControl(ManagedScreen screen)
-        {
-            ScreenControl screenControl = new ScreenControl(screen);
-            ContextMenuStrip contextMenu = new ContextMenuStrip();
-
-            var identifyMenuItem = new ToolStripMenuItem() { Text = "Identify" };
-            identifyMenuItem.Click += (s, e) => ShowIdentification(screen);
-            contextMenu.Items.Add(identifyMenuItem);
-
-            var locateMenuItem = new ToolStripMenuItem() { Text = "Open in Explorer..." };
-            locateMenuItem.Click += (s, e) => Process.Start("explorer.exe", $"/select, \"{screenControl.GetWallpaperPath()}\"");
-            contextMenu.Items.Add(locateMenuItem);
-
-            var positionMenuItem = new ToolStripMenuItem() { Text = "Position..." };
-
-            foreach (var position in Enum.GetValues(typeof(DesktopWallpaperPosition)))
-            {
-                var positionItem = new ToolStripMenuItem() { Text = position.ToString() };
-                var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
-
-                var currentPosition = wallpaper.GetPosition();
-                if (currentPosition == (DesktopWallpaperPosition)position)
-                    positionItem.Checked = true;
-
-                positionItem.Click += (s, e) =>
-                {
-                    wallpaper.SetPosition((DesktopWallpaperPosition)position);
-
-                };
-                positionMenuItem.DropDownItems.Add(positionItem);
-
-            }
-
-            contextMenu.Items.Add(positionMenuItem);
-            screenControl.ContextMenuStrip = contextMenu;
-            return screenControl;
-        }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -170,14 +69,14 @@ namespace WallpaperSwitcher
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             if (WindowState != _previousWindowState)
-                DrawScreens(true);
+                screenLayoutPanel1.DrawScreens();
 
             _previousWindowState = WindowState;
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
-            DrawScreens(true);
+            screenLayoutPanel1.DrawScreens();
         }
 
         private void OpenDisplaySettings(object sender, EventArgs e)
