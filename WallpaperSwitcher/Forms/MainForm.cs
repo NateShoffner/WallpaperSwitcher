@@ -1,3 +1,4 @@
+using Shell32;
 using System.Diagnostics;
 using WallpaperSwitcher.Forms;
 
@@ -15,10 +16,10 @@ namespace WallpaperSwitcher
 
             screenLayoutPanel1.ScreenIdentifyClick += ShowIdentification;
 
-            LoadScreens(this, EventArgs.Empty);
+            LoadScreens();
         }
 
-        private void LoadScreens(object sender, EventArgs e)
+        private void LoadScreens(object sender = null, EventArgs e = null)
         {
             var screens = Screen.AllScreens;
 
@@ -76,7 +77,6 @@ namespace WallpaperSwitcher
             _previousWindowState = WindowState;
         }
 
-
         private void OpenDisplaySettings(object sender, EventArgs e)
         {
             var psi = new ProcessStartInfo
@@ -86,6 +86,12 @@ namespace WallpaperSwitcher
             };
 
             Process.Start(psi);
+        }
+
+        private void ShowDesktop(object sender, EventArgs e)
+        {
+            ShellClass shell = new ShellClass();
+            shell.MinimizeAll();
         }
     }
 }

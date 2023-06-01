@@ -45,6 +45,7 @@
             button2 = new Button();
             btnDisplaySettings = new Button();
             screenLayoutPanel1 = new Controls.ScreenLayoutPanel();
+            btnShowDesktop = new Button();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -176,6 +177,7 @@
             // screenLayoutPanel1
             // 
             screenLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            screenLayoutPanel1.IsResizing = false;
             screenLayoutPanel1.Location = new Point(12, 27);
             screenLayoutPanel1.Name = "screenLayoutPanel1";
             screenLayoutPanel1.ShowScreenModels = true;
@@ -184,11 +186,23 @@
             screenLayoutPanel1.Size = new Size(760, 307);
             screenLayoutPanel1.TabIndex = 6;
             // 
+            // btnShowDesktop
+            // 
+            btnShowDesktop.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnShowDesktop.Location = new Point(524, 340);
+            btnShowDesktop.Name = "btnShowDesktop";
+            btnShowDesktop.Size = new Size(121, 37);
+            btnShowDesktop.TabIndex = 7;
+            btnShowDesktop.Text = "Show Desktop";
+            btnShowDesktop.UseVisualStyleBackColor = true;
+            btnShowDesktop.Click += ShowDesktop;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 411);
+            Controls.Add(btnShowDesktop);
             Controls.Add(screenLayoutPanel1);
             Controls.Add(btnDisplaySettings);
             Controls.Add(button2);
@@ -230,5 +244,6 @@
         private Button btnDisplaySettings;
         private ToolStripMenuItem displaySettingsToolStripMenuItem;
         private Controls.ScreenLayoutPanel screenLayoutPanel1;
+        private Button btnShowDesktop;
     }
 }
