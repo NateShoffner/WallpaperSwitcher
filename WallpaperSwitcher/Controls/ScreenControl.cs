@@ -13,6 +13,7 @@ namespace WallpaperSwitcher
         public ScreenControl()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
         }
 
         public ScreenControl(ManagedScreen screen) : this()
@@ -95,12 +96,16 @@ namespace WallpaperSwitcher
         {
             lblId.Visible = false;
             lblInfo.Visible = true;
+
+            DrawBorder(Color.Gray);
         }
 
         private void pbPreview_MouseEnter(object sender, EventArgs e)
         {
             lblId.Visible = true;
             lblInfo.Visible = false;
+
+            DrawBorder(Color.LightBlue);
         }
 
         private void pbPreview_Click(object sender, EventArgs e)
@@ -122,14 +127,18 @@ namespace WallpaperSwitcher
             }
         }
 
-        private void ScreenControl_Paint(object sender, PaintEventArgs e)
+        private void DrawBorder(Color color)
         {
-            const int BORDER_SIZE = 3;
+            const int BORDER_SIZE = 4;
 
-            ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset,
-                                  SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset,
-                                  SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset,
-                                  SystemColors.WindowFrame, BORDER_SIZE, ButtonBorderStyle.Inset);
+            using (var g = pbPreview.CreateGraphics())
+            {
+                ControlPaint.DrawBorder(g, pbPreview.ClientRectangle,
+                                      color, BORDER_SIZE, ButtonBorderStyle.Solid,
+                                      color, BORDER_SIZE, ButtonBorderStyle.Solid,
+                                      color, BORDER_SIZE, ButtonBorderStyle.Solid,
+                                      color, BORDER_SIZE, ButtonBorderStyle.Solid);
+            }
         }
 
         public ManagedScreen Screen { get; }

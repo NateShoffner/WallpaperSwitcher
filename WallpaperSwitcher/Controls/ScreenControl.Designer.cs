@@ -108,7 +108,6 @@ namespace WallpaperSwitcher
             Name = "ScreenControl";
             Padding = new Padding(3);
             Size = new Size(348, 196);
-            Paint += ScreenControl_Paint;
             ((System.ComponentModel.ISupportInitialize)pbPreview).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
