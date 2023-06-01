@@ -32,7 +32,6 @@ namespace WallpaperSwitcher
         {
             components = new System.ComponentModel.Container();
             pbPreview = new PictureBox();
-            lblInfo = new OutlinedLabel();
             toolTip1 = new ToolTip(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
             identifyToolStripMenuItem = new ToolStripMenuItem();
@@ -54,21 +53,6 @@ namespace WallpaperSwitcher
             pbPreview.MouseEnter += pbPreview_MouseEnter;
             pbPreview.MouseLeave += pbPreview_MouseLeave;
             // 
-            // lblInfo
-            // 
-            lblInfo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lblInfo.AutoSize = true;
-            lblInfo.BackColor = Color.Transparent;
-            lblInfo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lblInfo.Location = new Point(3, 3);
-            lblInfo.Name = "lblInfo";
-            lblInfo.OutlineForeColor = Color.White;
-            lblInfo.OutlineWidth = 2F;
-            lblInfo.Size = new Size(57, 21);
-            lblInfo.TabIndex = 2;
-            lblInfo.Text = "Details";
-            lblInfo.TextAlign = ContentAlignment.TopCenter;
-            // 
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(18, 18);
@@ -88,7 +72,8 @@ namespace WallpaperSwitcher
             lblId.BackColor = Color.Transparent;
             lblId.Font = new Font("Segoe UI", 32F, FontStyle.Bold, GraphicsUnit.Point);
             lblId.ForeColor = Color.Black;
-            lblId.Location = new Point(3, 3);
+            lblId.Location = new Point(13, 13);
+            lblId.Margin = new Padding(10, 10, 0, 0);
             lblId.Name = "lblId";
             lblId.OutlineForeColor = Color.White;
             lblId.OutlineWidth = 5F;
@@ -103,7 +88,6 @@ namespace WallpaperSwitcher
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(lblId);
-            Controls.Add(lblInfo);
             Controls.Add(pbPreview);
             Name = "ScreenControl";
             Padding = new Padding(3);
@@ -116,7 +100,6 @@ namespace WallpaperSwitcher
 
         #endregion
         private PictureBox pbPreview;
-        private OutlinedLabel lblInfo;
         private ToolTip toolTip1;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem identifyToolStripMenuItem;

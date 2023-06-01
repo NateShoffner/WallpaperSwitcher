@@ -24,18 +24,11 @@ namespace WallpaperSwitcher
             lblId.Parent = pbPreview;
             lblId.Text = screen.Id.ToString();
 
-            lblInfo.Parent = pbPreview;
-
-            var infoBuilder = new StringBuilder();
-            infoBuilder.AppendLine(screen.Screen.DeviceFriendlyName());
-            if (screen.Screen.Primary)
-            {
-                infoBuilder.AppendLine("(Primary)");
-            }
-            infoBuilder.AppendLine();
-            lblInfo.Text = infoBuilder.ToString();
-
             var toolTipBuilder = new StringBuilder();
+
+            screen.LoadSettings();
+
+            toolTipBuilder.AppendLine($"Model: {screen.Screen.DeviceFriendlyName()}");
             toolTipBuilder.AppendLine($"Refresh Rate: {screen.ScreenSettings.dmDisplayFrequency}hz");
             toolTipBuilder.Append($"Resolution: {screen.Screen.Bounds.Width}x{screen.Screen.Bounds.Height}");
 
@@ -108,7 +101,6 @@ namespace WallpaperSwitcher
         private void pbPreview_MouseLeave(object sender, EventArgs e)
         {
             lblId.Visible = false;
-            lblInfo.Visible = true;
 
             DrawBorder(Color.Gray);
         }
@@ -116,7 +108,6 @@ namespace WallpaperSwitcher
         private void pbPreview_MouseEnter(object sender, EventArgs e)
         {
             lblId.Visible = true;
-            lblInfo.Visible = false;
 
             DrawBorder(Color.LightBlue);
         }
