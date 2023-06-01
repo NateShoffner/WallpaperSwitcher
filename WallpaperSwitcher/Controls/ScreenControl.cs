@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 using System.Text;
 using WallpaperSwitcher.Utils;
 
@@ -76,14 +77,26 @@ namespace WallpaperSwitcher
 
         public string GetWallpaperPath()
         {
-            var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
-            var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
-            return wallpaper.GetWallpaper(monitorId);
+            try
+            {
+                var wallpaper = (IDesktopWallpaper)new DesktopWallpaperClass();
+                var monitorId = wallpaper.GetMonitorDevicePathAt((uint)Screen.Id - 1);
+                return wallpaper.GetWallpaper(monitorId);
+            }
+
+            catch (COMException ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
         }
 
         private Image DrawScreenPreview()
         {
             var wallpaperPath = GetWallpaperPath();
+
+            if (wallpaperPath == null)
+                return null;
 
             using (var wImg = Image.FromFile(wallpaperPath))
             {
