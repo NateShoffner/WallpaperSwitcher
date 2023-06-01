@@ -16,6 +16,7 @@ namespace WallpaperSwitcher
                 return;
             }
 
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm());
         }
