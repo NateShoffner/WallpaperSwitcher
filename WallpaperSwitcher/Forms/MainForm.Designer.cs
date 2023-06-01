@@ -55,7 +55,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(670, 24);
+            menuStrip1.Size = new Size(784, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -128,9 +128,9 @@
             // 
             statusStrip1.ImageScalingSize = new Size(18, 18);
             statusStrip1.Items.AddRange(new ToolStripItem[] { lblScreens });
-            statusStrip1.Location = new Point(0, 385);
+            statusStrip1.Location = new Point(0, 389);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(670, 22);
+            statusStrip1.Size = new Size(784, 22);
             statusStrip1.TabIndex = 2;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -143,7 +143,7 @@
             // button1
             // 
             button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button1.Location = new Point(12, 336);
+            button1.Location = new Point(12, 340);
             button1.Name = "button1";
             button1.Size = new Size(121, 37);
             button1.TabIndex = 3;
@@ -154,7 +154,7 @@
             // button2
             // 
             button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button2.Location = new Point(139, 336);
+            button2.Location = new Point(139, 340);
             button2.Name = "button2";
             button2.Size = new Size(121, 37);
             button2.TabIndex = 4;
@@ -165,7 +165,7 @@
             // btnDisplaySettings
             // 
             btnDisplaySettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnDisplaySettings.Location = new Point(537, 336);
+            btnDisplaySettings.Location = new Point(651, 340);
             btnDisplaySettings.Name = "btnDisplaySettings";
             btnDisplaySettings.Size = new Size(121, 37);
             btnDisplaySettings.TabIndex = 5;
@@ -181,14 +181,14 @@
             screenLayoutPanel1.ShowScreenModels = true;
             screenLayoutPanel1.ShowScreenNumbers = true;
             screenLayoutPanel1.ShowWallpaperPreviews = true;
-            screenLayoutPanel1.Size = new Size(646, 303);
+            screenLayoutPanel1.Size = new Size(760, 307);
             screenLayoutPanel1.TabIndex = 6;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(670, 407);
+            ClientSize = new Size(784, 411);
             Controls.Add(screenLayoutPanel1);
             Controls.Add(btnDisplaySettings);
             Controls.Add(button2);
@@ -197,6 +197,7 @@
             Controls.Add(menuStrip1);
             DoubleBuffered = true;
             MainMenuStrip = menuStrip1;
+            MinimumSize = new Size(800, 450);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Wallpaper Switcher";
