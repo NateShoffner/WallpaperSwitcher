@@ -24,6 +24,9 @@ namespace WallpaperSwitcher
             lblId.Parent = pbPreview;
             lblId.Text = screen.Id.ToString();
 
+            if (screen.Screen.Primary)
+                lblId.Text += "*";
+
             var toolTipBuilder = new StringBuilder();
 
             screen.LoadSettings();
