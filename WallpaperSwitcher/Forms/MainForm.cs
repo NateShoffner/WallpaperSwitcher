@@ -1,10 +1,12 @@
+
+using MaterialSkin;
+using MaterialSkin.Controls;
 using Shell32;
 using System.Diagnostics;
-using WallpaperSwitcher.Forms;
 
 namespace WallpaperSwitcher
 {
-    public partial class MainForm : Form
+    public partial class MainForm : MaterialForm
     {
         private FormWindowState _previousWindowState;
 
@@ -14,10 +16,16 @@ namespace WallpaperSwitcher
 
             _previousWindowState = WindowState;
 
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            //materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Purple100, Primary.Teal100, Accent.Blue200, TextShade.BLACK);
+
             screenLayoutPanel1.ScreenIdentifyClick += ShowIdentification;
 
             LoadScreens();
         }
+
 
         private void LoadScreens(object sender = null, EventArgs e = null)
         {
@@ -32,7 +40,6 @@ namespace WallpaperSwitcher
                 screenLayoutPanel1.AddScreen(screen);
             }
 
-            lblScreens.Text = $"Screens: {screens.Length}";
             screenLayoutPanel1.DrawScreens();
         }
 
@@ -41,23 +48,6 @@ namespace WallpaperSwitcher
             foreach (var screen in screenLayoutPanel1.ManagedScreens)
             {
                 ShowIdentification(screen);
-            }
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (var dialog = new SettingsForm())
-            {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-
-                }
             }
         }
 
