@@ -38,7 +38,6 @@ namespace WallpaperSwitcher
 
             LoadScreens();
         }
-
         private void LoadScreens(object sender = null, EventArgs e = null)
         {
             var screens = Screen.AllScreens;
@@ -54,7 +53,6 @@ namespace WallpaperSwitcher
 
             screenLayoutPanel1.DrawScreens();
         }
-
         private void IdentifyScreens(object sender, EventArgs e)
         {
             foreach (var screen in screenLayoutPanel1.ManagedScreens)
@@ -62,13 +60,11 @@ namespace WallpaperSwitcher
                 ShowIdentification(screen);
             }
         }
-
         private void ShowIdentification(ManagedScreen screen)
         {
             IdentityForm identityForm = new IdentityForm(screen, 2000);
             identityForm.Show();
         }
-
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             //TODO maybe handle this in ScreenLayoutPanel
