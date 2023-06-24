@@ -94,10 +94,19 @@ namespace WallpaperSwitcher
             if (wallpaperPath == null)
                 return null;
 
-            using (var wImg = Image.FromFile(wallpaperPath))
+            try
             {
-                var resized = wImg.GetThumbnailImage(pbPreview.Width, pbPreview.Height, null, IntPtr.Zero);
-                return resized;
+                using (var wImg = Image.FromFile(wallpaperPath))
+                {
+                    var resized = wImg.GetThumbnailImage(pbPreview.Width, pbPreview.Height, null, IntPtr.Zero);
+                    return resized;
+                }
+            }
+
+            catch (FileNotFoundException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return null;
             }
         }
 
