@@ -91,7 +91,7 @@ namespace WallpaperSwitcher
         {
             var wallpaperPath = GetWallpaperPath();
 
-            if (wallpaperPath == null)
+            if (string.IsNullOrEmpty(wallpaperPath))
                 return null;
 
             try
@@ -126,7 +126,6 @@ namespace WallpaperSwitcher
 
         private void pbPreview_Click(object sender, EventArgs e)
         {
-            // support iamge types
             using (var ofd = new OpenFileDialog()
             {
                 Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png",
