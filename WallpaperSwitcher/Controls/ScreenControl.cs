@@ -128,7 +128,7 @@ namespace WallpaperSwitcher
         {
             using (var ofd = new OpenFileDialog()
             {
-                Filter = "Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png",
+                Filter = "Image Files (*.bmp, *.jpg, *.png, *.gfif)|*.bmp;*.jpg;*.png;*.jfif",
                 Title = "Select Wallpaper"
             })
             {
